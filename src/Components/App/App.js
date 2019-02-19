@@ -3,6 +3,7 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar.js';
 import SearchResults from '../SearchResults/SearchResults.js';
 import Playlist from '../Playlist/Playlist.js';
+import Spotify from '../../util/Spotify.js';
 
 class App extends React.Component {
   constructor(props){
@@ -13,36 +14,9 @@ class App extends React.Component {
     this.savePlaylist=this.savePlaylist.bind(this);
     this.search=this.search.bind(this);
 
-    this.state = { searchResults: [
-                                  { name: 'Bohemian Rhapsody',
-                                    artist: 'Queen',
-                                    album: 'A night at the Opera',
-                                    id: 123},
-                                  { name: 'Summer of 69',
-                                    artist: 'Brian Adams',
-                                    album: 'it doesnt matter',
-                                    id:234},
-                                  { name: 'You stink',
-                                    artist: 'The smelly bums',
-                                    album: 'Toilet time',
-                                    id:345}
-                    ],
+    this.state = { searchResults: [],
                     playlistName: 'Elsies list',
-                    playlistTracks: [
-                                  { name: 'Only know you love her',
-                                    artist: 'Passenger',
-                                    album: 'Passengers album',
-                                    id: 456,
-                                    uri: 'bla'},
-                                  { name: 'Rows of Houses',
-                                    artist: 'Radiohead',
-                                    album: 'Hello computer',
-                                    id:567},
-                                  { name: 'Night swimming',
-                                    artist: 'REM',
-                                    album: 'Automatic for the people',
-                                    id:678}
-                    ]
+                    playlistTracks: []
    }
   }
 
@@ -70,7 +44,9 @@ class App extends React.Component {
   }
 
   search(searchTerm){
-    console.log(searchTerm);
+    const searchResult = Spotify.search(searchTerm).then(results => {
+      this.setState({ searchResults: results });
+    });
   }
 
   render() {
